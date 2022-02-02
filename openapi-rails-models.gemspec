@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.cert_chain = [Gem.default_cert_path]
 
   spec.required_ruby_version = '>= 2.6.3'
+  spec.add_dependency 'factory_bot_rails', '>= 5.2.0'
   spec.add_dependency 'rails', '>= 6.1.0'
   spec.add_dependency 'zeitwerk', '>= 2.5'
 
