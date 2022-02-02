@@ -1,5 +1,4 @@
 inherit_from:
-  - https://raw.githubusercontent.com/bkuhlmann/code_quality/main/configurations/rubocop/ruby.yml
   - https://raw.githubusercontent.com/bkuhlmann/code_quality/main/configurations/rubocop/rake.yml
   - https://raw.githubusercontent.com/bkuhlmann/code_quality/main/configurations/rubocop/performance.yml
   - https://raw.githubusercontent.com/bkuhlmann/code_quality/main/configurations/rubocop/rspec.yml
@@ -11,6 +10,8 @@ AllCops:
   ExtraDetails: true
   UseCache: true
   CacheRootDirectory: .caches
+  NewCops: enable
+  TargetRubyVersion: 2.6
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
