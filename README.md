@@ -1,0 +1,1 @@
+# openapi-rails-models
