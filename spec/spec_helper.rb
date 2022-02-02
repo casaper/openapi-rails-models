@@ -7,9 +7,6 @@ require 'simplecov'
 SimpleCov.start { enable_coverage :branch }
 
 require 'openapi/rails/models'
-require 'refinements'
-
-using Refinements::Pathnames
 
 Pathname.require_tree __dir__, 'support/shared_contexts/**/*.rb'
 

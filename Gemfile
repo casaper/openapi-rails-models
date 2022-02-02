@@ -6,29 +6,30 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'rails', '>= 6.1.0'
+
 group :code_quality do
   gem 'brakeman', require: false
   gem 'bundler-audit', require: false
-  gem 'bundler-leak', '~> 0.2'
-  gem 'dead_end', '~> 3.0'
+  gem 'bundler-leak', require: false
+  gem 'dead_end'
   gem 'fasterer', require: false # hints for slow code
-  gem 'git-lint', '~> 3.0'
-  gem 'reek', '~> 6.1'
+  gem 'reek'
   gem 'rubocop'
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rake'
   gem 'rubocop-rspec'
-  gem 'simplecov', '~> 0.21'
+  gem 'simplecov'
 end
 
 group :development do
-  gem 'rake', '~> 13.0'
+  gem 'rake'
 end
 
 group :test do
-  gem 'guard-rspec', '~> 4.7', require: false
-  gem 'rspec', '~> 3.10'
+  gem 'guard-rspec', require: false
+  gem 'rspec'
 end
 
 group :tools do
