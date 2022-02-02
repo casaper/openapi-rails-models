@@ -4,6 +4,12 @@ inherit_from:
   - https://raw.githubusercontent.com/bkuhlmann/code_quality/main/configurations/rubocop/performance.yml
   - https://raw.githubusercontent.com/bkuhlmann/code_quality/main/configurations/rubocop/rspec.yml
 
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  ExtraDetails: true
+  UseCache: true
+  CacheRootDirectory: .caches
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
