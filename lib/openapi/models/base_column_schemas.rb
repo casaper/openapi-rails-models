@@ -9,22 +9,38 @@ module OpenApi
       # @param model [ActiveRecord::Base] the model to parse
       # @param only [Array<Symbol|String>] optionally parse only these columns
       # @param except [Array<Symbol|String>] optionally parse all columns except these
-      def initialize(model, only: [], except: [])
+      # @param optional [Array<Symbol|String>] integrate attribute like methods in schema
+      def initialize(model, only: [], except: [], methods: [])
         @model = model
         @only = only
         @except = except
+        @methods = methods
       end
 
       def columns
         @columns ||= columns_to_map.to_h do |column|
           [
             column.name.to_sym,
-            send(column.cast_type.type, column)
+            DbColumnTypeMap.send(column.cast_type.type, column)
           ]
         end
       end
 
+      def method_props
+        @method_props ||= @methods.index_with do |method|
+          MethodReturnTypeMap.map(model_sample, method)
+        end
+      end
+
+      def properties
+        @properties ||= columns.merge(method_props)
+      end
+
       private
+
+      def model_sample
+        @model_sample ||= model.first || model.new
+      end
 
       def columns_to_map
         if only.any?
@@ -42,45 +58,6 @@ module OpenApi
 
       def except_columns
         model.columns.reject { |c| except.include?(c.name) }
-      end
-
-      def integer(column)
-        {
-          type: 'integer',
-          format: column.cast_type.limit == 8 ? 'int64' : 'int32',
-          minimum: column.cast_type.instance_variable_get(:@range).first,
-          maximum: column.cast_type.instance_variable_get(:@range).last
-        }
-      end
-
-      def float(_column)
-        { type: 'number', format: 'float' }
-      end
-
-      def decimal(column)
-        if column.cast_type.is_a? ActiveRecord::Type::DecimalWithoutScale
-          { type: 'integer' }
-        else
-          { type: 'string', format: '(-\d+\.\d+|\d+\.\d+|-\d+|\d+)' }
-        end
-      end
-
-      def boolean(_column)
-        { type: 'boolean' }
-      end
-
-      def string(column)
-        { type: 'string', maxLength: column.limit }
-      end
-      alias text string
-
-      def time(_column)
-        { type: 'string', format: 'date-time' }
-      end
-      alias datetime time
-
-      def date(_column)
-        { type: 'string', format: 'date' }
       end
     end
   end
