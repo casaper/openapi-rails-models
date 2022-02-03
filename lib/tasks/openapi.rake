@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Lint/UselessAssignment
+
 namespace :openapi do
   desc 'generate the OpenAPI schemas of the ActiveRecord models'
   task models: :environment do
@@ -8,3 +10,5 @@ namespace :openapi do
     # TODO: implement rest of the task
   end
 end
+
+# rubocop:enable Lint/UselessAssignment

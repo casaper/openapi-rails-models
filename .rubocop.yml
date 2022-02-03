@@ -12,9 +12,13 @@ AllCops:
   CacheRootDirectory: .caches
   NewCops: enable
   TargetRubyVersion: 2.6
+  Exclude:
+    - spec/dummy/config/initializers/wrap_parameters.rb
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
 Style/MissingElse:
   Exclude:
     - bin/**/*
+Style/Documentation:
+  Enabled: false
