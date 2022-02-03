@@ -3,32 +3,34 @@
 module OpenApi
   module Models
     # Parse main column types from ActiveRecord
-    class BaseColumnSchemas
+    class Parse
       attr_reader :model, :only, :except
 
       # @param model [ActiveRecord::Base] the model to parse
       # @param only [Array<Symbol|String>] optionally parse only these columns
       # @param except [Array<Symbol|String>] optionally parse all columns except these
       # @param optional [Array<Symbol|String>] integrate attribute like methods in schema
-      def initialize(model, only: [], except: [], methods: [])
+      # @param optional [Array<Symbol|String>] integrate attribute like methods in schema
+      def initialize(model:, only: [], except: [], methods: [], optional: [])
         @model = model
         @only = only
         @except = except
         @methods = methods
+        @optional = optional
       end
 
       def columns
         @columns ||= columns_to_map.to_h do |column|
           [
             column.name.to_sym,
-            DbColumnTypeMap.send(column.cast_type.type, column)
+            ParseDbColumnType.send(column.cast_type.type, column)
           ]
         end
       end
 
       def method_props
         @method_props ||= @methods.index_with do |method|
-          MethodReturnTypeMap.map(model_sample, method)
+          ParseMethodType.map(model_sample, method)
         end
       end
 

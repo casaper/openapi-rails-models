@@ -6,7 +6,7 @@ require 'file'
 module Openapi
   module Models
     class Schemas
-      CONFIG_FILE_PATH = 'swagger/generated_model_schemas.yml'
+      CONFIG_FILE_PATH = 'config/openapi_rails_models.yml'
       DEFAULT_OUT_PATH = 'swagger/generated_model_schemas.yml'
 
       attr_reader :config, :models, :model_configs, :schemas
@@ -53,11 +53,12 @@ module Openapi
       end
 
       def load_config!
-        file_config = YAML.load_file(Rails.root.join('config/openapi_rails_models.yml'), symbolize_names: true) || {}
+        file_config = YAML.load_file(Rails.root.join(CONFIG_FILE_PATH), symbolize_names: true) || {}
         @config = {
           schemas_output_path: file_config.fetch(:schemas_output_path, DEFAULT_OUT_PATH),
-          models: file_config&.fetch(:models, @all_models_blank_config)
+          models: @all_models_blank_config.merge(file_config&.fetch(:models, {}))
         }
+        write_config!
       end
 
       def generate_default_config!
@@ -65,6 +66,10 @@ module Openapi
           schemas_output_path: DEFAULT_OUT_PATH,
           models: @all_models_blank_config
         }
+        write_config!
+      end
+
+      def write_config!
         config_file = File.open(Rails.root.join(CONFIG_FILE_PATH), 'w')
         config_file.write(config.deep_stringify_keys.to_yaml)
         config_file.close

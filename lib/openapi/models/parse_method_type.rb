@@ -2,7 +2,7 @@
 
 module Openapi
   module Models
-    class MethodReturnTypeMap
+    class ParseMethodType
       class << self
         TYPE_MAP_NO_RECURSION = {
           Integer => :integer,

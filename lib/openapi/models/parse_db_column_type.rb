@@ -2,9 +2,10 @@
 
 module Openapi
   module Models
-    class DbColumnTypeMap
+    class ParseDbColumnType
       class << self
         def integer(column)
+          # TODO: recognize foreign key and add description mentioning model related to type
           {
             type: 'integer',
             format: column.cast_type.limit == 8 ? 'int64' : 'int32',
