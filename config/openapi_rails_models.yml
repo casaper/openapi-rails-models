@@ -1,0 +1,25 @@
+---
+schemas_output_path: swagger/generated_model_schemas.yml
+# models should be addressed with the same key as Model.model_name.i18n_key returns
+models:
+  # This model will not be generated as schema
+  example_skip_model: false
+  example_only_model:
+    # only these columns
+    only:
+      - id
+      - title
+  example_except_model:
+    # all columns except these
+    except:
+      - encrypted_password
+  example_optional_model:
+    # make properties not required and nullable in schema that rails validations
+    # would require presence with validations or are required because they are
+    # foreign keys
+    optional:
+      - other_model_id
+  example_methods_model:
+    # add property like methods to the schema
+    methods:
+      - full_name
